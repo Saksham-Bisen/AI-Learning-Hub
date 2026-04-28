@@ -1,373 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta property="og:title" content="AI CS Learning Hub">
+    <meta property="og:description" content="A premium roadmap for Computer Science students.">
+    <meta property="og:image" content="link-to-your-screenshot.jpg">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CONSTRUCT | CS Foundations</title>
+    <title>AI CS Learning Hub | Full Resource Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://www.youtube.com/iframe_api"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&family=Fira+Code:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #051610; overflow-x: hidden; scroll-behavior: smooth;}
         
-        :root {
-            --bg-color: #010805;
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.6);
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.12);
-            --mesh-opacity: 0.15;
-            --accent: #22c55e;
-            --cursor-color: #ffffff;
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
         }
 
-        [data-theme="light"] {
-            --bg-color: #f7faf9;
-            --text-primary: #051610;
-            --text-secondary: #3d5a4e;
-            --glass-bg: rgba(255, 255, 255, 0.8);
-            --glass-border: rgba(5, 22, 16, 0.2);
-            --mesh-opacity: 0.35;
-            --accent: #16a34a;
-            --cursor-color: #051610;
+        .bg-mesh {
+            background: radial-gradient(circle at 10% 20%, rgba(34, 197, 94, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 10%, rgba(249, 115, 22, 0.15) 0%, transparent 40%),
+                        linear-gradient(to bottom, #062b1a, #0a0a0a);
+            background-attachment: fixed;
         }
 
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg-color); 
-            color: var(--text-primary);
-            transition: background-color 0.4s ease;
-            overflow-x: hidden; margin: 0; padding: 0;
-            scroll-behavior: smooth;
+        #floating-window {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translate(-50%, -50%) scale(0.9);
+            opacity: 0; pointer-events: none;
         }
+        #floating-window.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
 
-        @media (hover: hover) and (pointer: fine) {
-            body { cursor: none; }
-            #cursor { position: fixed; width: 8px; height: 8px; background: var(--cursor-color); border-radius: 50%; pointer-events: none; z-index: 9999; }
-            #cursor-follower { position: fixed; width: 40px; height: 40px; border: 1px solid var(--cursor-color); opacity: 0.3; border-radius: 50%; pointer-events: none; z-index: 9998; transition: transform 0.12s ease-out; }
-        }
-
-        .mesh-bg { 
-            position: fixed; inset: 0; z-index: -1; 
-            background: radial-gradient(circle at var(--m-x, 50%) var(--m-y, 50%), rgba(34, 197, 94, var(--mesh-opacity)) 0%, transparent 45%), var(--bg-color);
-            filter: blur(80px);
-        }
-
-        #progress-rail { 
-            position: fixed; left: 15px; top: 0; width: 1px; height: 100vh; 
-            background: var(--glass-border); z-index: 50; opacity: 0; transition: opacity 0.5s ease;
-        }
-        @media (min-width: 768px) { #progress-rail { left: 40px; } }
-        #progress-fill { width: 3px; background: var(--accent); position: absolute; top: 0; left: -1px; transition: height 0.2s; box-shadow: 0 0 15px var(--accent); }
-
-        .liquid-glass { background: var(--glass-bg); backdrop-filter: blur(40px) saturate(200%); border: 1px solid var(--glass-border); transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-
-        #modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); opacity: 0; pointer-events: none; transition: opacity 0.4s; z-index: 2000; }
-        #modal-overlay.active { opacity: 1; pointer-events: auto; }
-        #popup-window { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -45%); width: 95%; max-width: 600px; opacity: 0; visibility: hidden; z-index: 2001; transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1); }
-        #popup-window.active { transform: translate(-50%, -50%); opacity: 1; visibility: visible; }
-
-        .reveal { opacity: 0; transform: translateY(20px); transition: 0.6s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        .resource-card:hover { border-color: rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.06); }
+        .pulse-glow { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.3); } 70% { box-shadow: 0 0 0 8px rgba(250, 204, 21, 0); } 100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); } }
     </style>
 </head>
-<body onclick="startAudio()">
+<body class="bg-mesh min-h-screen text-white p-6 md:p-10" onclick="initAudio()">
 
-    <div id="yt-player" style="position: absolute; top: -9999px; left: -9999px;"></div>
-
-    <div id="cursor" class="hidden md:block"></div>
-    <div id="cursor-follower" class="hidden md:block"></div>
-    <div class="mesh-bg"></div>
-    <div id="progress-rail"><div id="progress-fill"></div></div>
-
-    <nav class="fixed top-0 left-0 w-full z-[100] px-6 py-6 md:px-10 md:py-10 flex justify-between items-center">
-        <div class="text-lg md:text-xl font-bold tracking-tighter uppercase italic flex items-center gap-2" style="color: var(--text-primary)">
-            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div> CS_BASE
+    <nav class="max-w-7xl mx-auto flex items-center justify-between liquid-glass px-8 py-4 rounded-3xl mb-12 relative z-10">
+        <div class="flex items-center gap-3">
+            <div class="bg-green-500/20 p-2 rounded-xl border border-green-500/30"><i data-lucide="brain-circuit" class="text-green-400 w-6 h-6"></i></div>
+            <span class="font-bold text-lg tracking-tight">AI CS Hub</span>
         </div>
-        <div class="flex items-center gap-4 md:gap-12">
-            <div class="hidden md:flex gap-16 text-[10px] font-black tracking-[0.5em] uppercase opacity-60">
-                <a href="#core" class="hover:text-green-500 transition-colors">Construct</a>
-                <a href="#vault" class="hover:text-green-500 transition-colors">Vault</a>
-                <a href="#compiler" class="hover:text-green-500 transition-colors">Sandbox</a>
-            </div>
-            <div class="flex items-center gap-2 md:gap-4">
-                <button onclick="toggleMusic(event)" class="p-2 liquid-glass rounded-xl hover:scale-110 transition-transform">
-                    <i id="music-icon" data-lucide="volume-x" class="w-4 h-4 text-green-500"></i>
-                </button>
-                <button onclick="toggleTheme()" class="p-2 liquid-glass rounded-xl hover:scale-110 transition-transform">
-                    <i id="theme-icon" data-lucide="moon" class="w-4 h-4 text-green-500"></i>
-                </button>
-            </div>
-        </div>
+        <button id="muteBtn" onclick="toggleMute(event)" class="liquid-glass p-2 px-4 rounded-xl flex items-center gap-3 hover:bg-white/10 transition-all border border-white/10 pulse-glow">
+            <span class="text-[9px] font-bold uppercase tracking-widest text-yellow-400" id="audioStatus">Ambient On</span>
+            <div id="audioIconContainer"><i data-lucide="volume-2" class="w-4 h-4 text-yellow-400"></i></div>
+        </button>
     </nav>
 
-    <section class="min-h-screen flex flex-col items-center justify-center text-center px-6">
-        <div class="reveal active">
-            <span class="text-[8px] md:text-[9px] font-bold tracking-[0.6em] uppercase text-green-500 mb-4 md:mb-6 block animate-pulse">Master_CS_Guide // 2026</span>
-            <h1 class="text-[18vw] md:text-[12vw] font-black tracking-tighter uppercase mb-4 md:mb-6" style="color: var(--text-primary)">CONSTRUCT</h1>
-            <p style="color: var(--text-secondary);" class="max-w-xl text-base md:text-lg mx-auto leading-relaxed">
-                Shaping the <span class="italic font-bold text-[var(--text-primary)]">architectural foundations</span> of Computer Science. Compile your expertise and scale the system.
-            </p>
+    <header class="text-center mb-16">
+        <h1 class="text-5xl md:text-6xl font-extrabold mb-4">Master <span class="text-orange-400">Computer Science</span></h1>
+        <p class="text-gray-400">Your curated roadmap to engineering excellence.</p>
+    </header>
+
+    <div id="card-container" class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 mb-24">
         </div>
-    </section>
 
-    <section id="core" class="max-w-7xl mx-auto py-12 md:py-20 px-6 md:px-10">
-        <div id="card-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6"></div>
-    </section>
-
-    <section id="vault" class="max-w-7xl mx-auto py-20 md:py-32 px-6 md:px-10 reveal border-t border-white/5">
-        <div class="mb-12 md:mb-24">
-            <h2 class="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-none" style="color: var(--text-primary)">The <span class="text-green-500">Vault</span></h2>
-            <p class="text-[9px] md:text-[10px] font-bold uppercase tracking-[0.4em] opacity-40 mt-4">Verified Study Nodes & Documentation</p>
+    <section class="max-w-7xl mx-auto pb-20">
+        <div class="flex items-center gap-4 mb-10">
+            <h2 class="text-3xl font-bold">Free Study Resources</h2>
+            <div class="h-[1px] flex-grow bg-white/10"></div>
         </div>
-        <div id="vault-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12"></div>
-    </section>
 
-    <section id="resources" class="max-w-7xl mx-auto py-20 md:py-32 px-6 md:px-10 reveal border-t border-white/5">
-        <h2 class="text-4xl md:text-7xl font-black uppercase tracking-tighter mb-12 md:mb-16" style="color: var(--text-primary)">Free <span class="text-blue-500">Study Resources</span></h2>
-        <div id="resource-nodes" class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12"></div>
-    </section>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="liquid-glass p-6 rounded-3xl space-y-4">
+                <div class="flex items-center gap-2 text-green-400 mb-2">
+                    <i data-lucide="book-open" class="w-5 h-5"></i>
+                    <span class="text-xs font-bold uppercase tracking-widest">Documentation</span>
+                </div>
+                <div class="space-y-3">
+                    <a href="https://developer.mozilla.org" target="_blank" class="resource-card block p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center group">
+                        <span>MDN Web Docs</span>
+                        <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </a>
+                    <a href="https://en.cppreference.com" target="_blank" class="resource-card block p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center group">
+                        <span>C++ Reference</span>
+                        <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </a>
+                </div>
+            </div>
 
-    <section id="compiler" class="max-w-7xl mx-auto py-20 md:py-40 px-6 md:px-10 reveal border-t border-white/5">
-        <div class="mb-8 md:mb-16">
-            <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tighter mb-4" style="color: var(--text-primary)">Sandbox</h2>
-        </div>
-        <div class="liquid-glass relative rounded-[2rem] md:rounded-[3.5rem] p-1 overflow-hidden">
-            <div class="h-[400px] md:h-[600px] relative bg-[#010805]">
-                <iframe id="sandbox-ide" src="https://onecompiler.com/embed/python?theme=dark" width="100%" height="100%" frameborder="0"></iframe>
+            <div class="liquid-glass p-6 rounded-3xl space-y-4">
+                <div class="flex items-center gap-2 text-orange-400 mb-2">
+                    <i data-lucide="play-circle" class="w-5 h-5"></i>
+                    <span class="text-xs font-bold uppercase tracking-widest">Video Learning</span>
+                </div>
+                <div class="space-y-3">
+                    <a href="https://www.freecodecamp.org" target="_blank" class="resource-card block p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center group">
+                        <span>freeCodeCamp</span>
+                        <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@mycodeschool" target="_blank" class="resource-card block p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center group">
+                        <span>MyCodeSchool (DSA)</span>
+                        <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="liquid-glass p-6 rounded-3xl space-y-4">
+                <div class="flex items-center gap-2 text-blue-400 mb-2">
+                    <i data-lucide="terminal" class="w-5 h-5"></i>
+                    <span class="text-xs font-bold uppercase tracking-widest">Interactive</span>
+                </div>
+                <div class="space-y-3">
+                    <a href="https://leetcode.com" target="_blank" class="resource-card block p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center group">
+                        <span>LeetCode</span>
+                        <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </a>
+                    <a href="https://www.codewars.com" target="_blank" class="resource-card block p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center group">
+                        <span>CodeWars</span>
+                        <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
-    <footer class="py-32 md:py-64 text-center relative overflow-hidden">
-        <div class="reveal">
-            <div class="text-[25vw] md:text-[22vw] font-black tracking-tighter leading-none italic opacity-10" style="color: var(--text-primary)">MIT-WPU</div>
-        </div>
-    </footer>
-
-    <div id="modal-overlay" onclick="closeModal()"></div>
-    <div id="popup-window" class="liquid-glass p-6 md:p-12 rounded-[2rem] md:rounded-[3.5rem]"><div id="popup-content"></div></div>
+    <div id="overlay" onclick="closeWindow()" class="fixed inset-0 bg-black/70 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
+    <div id="floating-window" class="fixed top-1/2 left-1/2 w-[90%] max-w-xl max-h-[75vh] liquid-glass rounded-[2.5rem] z-50 p-8 overflow-y-auto">
+        <div id="window-content"></div>
+    </div>
 
     <script>
-        // Restored Audio Logic
-        let ytPlayer; let isMuted = true; let audioStarted = false;
-        function onYouTubeIframeAPIReady() {
-            ytPlayer = new YT.Player('yt-player', {
-                height: '0', width: '0', videoId: '8MUlk3qjByY',
-                playerVars: { 'autoplay': 0, 'loop': 1, 'playlist': '8MUlk3qjByY' },
-                events: { 'onReady': (e) => { e.target.setVolume(20); } }
-            });
-        }
-        function startAudio() { 
-            if (!audioStarted && ytPlayer && ytPlayer.playVideo) { 
-                ytPlayer.playVideo(); ytPlayer.unMute(); isMuted = false;
-                const icon = document.getElementById('music-icon');
-                if(icon) icon.setAttribute('data-lucide', 'volume-2');
-                audioStarted = true; lucide.createIcons();
-            } 
-        }
-        function toggleMusic(e) {
-            e.stopPropagation(); const icon = document.getElementById('music-icon');
-            if (isMuted) { ytPlayer.unMute(); icon.setAttribute('data-lucide', 'volume-2'); isMuted = false; }
-            else { ytPlayer.mute(); icon.setAttribute('data-lucide', 'volume-x'); isMuted = true; }
+        const topics = {
+            programming: { title: "Programming", icon: "code-2", color: "green-400", items: ["Variable Scoping", "Pointers in C", "Memory Layout", "File I/O"] },
+            math: { title: "Mathematics", icon: "sigma", color: "green-200", items: ["Graph Theory", "Logic Gates", "Set Operations", "Recurrence Relations"] },
+            dsa: { title: "DSA", icon: "layers", color: "yellow-400", items: ["Array Traversal", "Queue Impl", "Quick Sort", "DFS/BFS"] },
+            webdev: { title: "Web Dev", icon: "globe", color: "orange-400", items: ["Flexbox/Grid", "DOM Events", "Async Fetch", "Auth Flow"] },
+            aiml: { title: "AI / ML", icon: "bot", color: "orange-600", items: ["Data Cleaning", "Loss Functions", "Tensors 101", "Model Training"] }
+        };
+
+        let userProgress = JSON.parse(localStorage.getItem('cs-hub-v4')) || {};
+        const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'); 
+        audio.loop = true; audio.volume = 0.15;
+        let isMuted = false; let audioStarted = false;
+
+        function initAudio() { if (!audioStarted) { audio.play(); audioStarted = true; } }
+
+        function toggleMute(e) {
+            e.stopPropagation(); isMuted = !isMuted; audio.muted = isMuted;
+            document.getElementById('audioStatus').innerText = isMuted ? "Ambient Off" : "Ambient On";
+            document.getElementById('audioIconContainer').innerHTML = isMuted ? '<i data-lucide="volume-x" class="w-4 h-4 text-gray-500"></i>' : '<i data-lucide="volume-2" class="w-4 h-4 text-yellow-400"></i>';
             lucide.createIcons();
         }
 
-        // Restored Data Logic
-        const masteryCategories = {
-            prog: { t: "Compile", i: "code", c: "green-400", list: ["Pointer Logic", "Memory Layout", "C++ Foundations"] },
-            math: { t: "Logic", i: "hash", c: "blue-400", list: ["Boolean Algebra", "Graph Theory"] },
-            buffer: { t: "Buffer", i: "layers", c: "yellow-400", list: ["B-Tree Indexing", "Dynamic Prog"] },
-            network: { t: "Network", i: "globe", c: "orange-400", list: ["OSI Stack"] },
-            neural: { t: "Neural", i: "brain", c: "red-500", list: ["Transformers"] }
-        };
-
-        const documentation = {
-        compile: { 
-            t: "Compile Nodes", 
-            c: "green-400", 
-            list: [
-                { 
-                    n: "Pointer Logic", 
-                    url: "https://en.cppreference.com/w/c/language/pointer", 
-                    d: "Master memory addressing, pointer arithmetic, and indirection in C/C++." 
-                },
-                { 
-                    n: "Memory Layout", 
-                    url: "https://www.geeksforgeeks.org/memory-layout-of-c-program/", 
-                    d: "Understanding the Stack, Heap, Data, and Text segments of an executable." 
-                },
-                { 
-                    n: "C++ Foundations", 
-                    url: "https://isocpp.org/wiki/faq/index", 
-                    d: "Core C++ principles: OOP, templates, and the Standard Template Library (STL)." 
-                }
-            ]
-        },
-        logic: { 
-            t: "Logic Nodes", 
-            c: "blue-400", 
-            list: [
-                { 
-                    n: "Boolean Algebra", 
-                    url: "https://www.electronics-tutorials.ws/boolean/bool_1.html", 
-                    d: "The mathematical foundation of digital logic gates and circuit simplification." 
-                },
-                { 
-                    n: "Graph Theory", 
-                    url: "https://www.britannica.com/science/graph-theory", 
-                    d: "Study of networks, vertices, and edges—essential for routing and data modeling." 
-                }
-            ]
-        },
-        buffer: { 
-            t: "Buffer Nodes", 
-            c: "yellow-400", 
-            list: [
-                { 
-                    n: "B-Tree Indexing", 
-                    url: "https://use-the-index-luke.com/sql/anatomy/the-tree", 
-                    d: "How database engines use balanced trees to perform lightning-fast searches." 
-                },
-                { 
-                    n: "Dynamic Prog", 
-                    url: "https://www.freecodecamp.org/news/follow-these-steps-to-solve-any-dynamic-programming-problem/", 
-                    d: "Breaking down complex problems into overlapping sub-problems for optimization." 
-                }
-            ]
-        }
-    };
-
-        // RESTORED Study Resource Links
-        const studyMaterial = {
-            docs: { t: "Documentation", c: "green-400", list: [
-                { n: "MDN Web Docs", url: "https://developer.mozilla.org" }, 
-                { n: "C++ Reference", url: "https://en.cppreference.com" }
-            ]},
-            video: { t: "Video Learning", c: "orange-400", list: [
-                { n: "freeCodeCamp", url: "https://www.youtube.com/@freecodecamp" }, 
-                { n: "MyCodeSchool (DSA)", url: "https://www.youtube.com/@mycodeschool" }
-            ]},
-            interactive: { t: "Interactive", c: "blue-400", list: [
-                { n: "LeetCode", url: "https://leetcode.com" }, 
-                { n: "CodeWars", url: "https://codewars.com" }
-            ]}
-        };
-
-        let state = JSON.parse(localStorage.getItem('cs-construct-master-final')) || {};
-
-        function draw() {
-            const m = document.getElementById('card-container'); const v = document.getElementById('vault-grid'); const r = document.getElementById('resource-nodes');
-            if(m) {
-                m.innerHTML = Object.keys(masteryCategories).map(k => {
-                    const top = masteryCategories[k], doneCount = state[k] ? Object.keys(state[k]).length : 0;
-                    const p = Math.round((doneCount / top.list.length) * 100);
-                    return `<div onclick="openProgressModal('${k}', '${top.t}')" class="liquid-glass p-6 md:p-8 rounded-[1.5rem] md:rounded-[2.5rem] reveal active hover:scale-105 cursor-pointer">
-                        <div class="flex justify-between mb-4"><i data-lucide="${top.i}" class="text-${top.c} w-5 h-5 md:w-6 md:h-6"></i><span class="mono text-[10px] font-bold" style="color: var(--text-secondary)">${p}%</span></div>
-                        <h3 class="text-[10px] md:text-xs font-bold uppercase tracking-widest">${top.t}</h3>
-                        <div class="mt-4 h-1 bg-white/5 rounded-full overflow-hidden"><div class="h-full bg-${top.c} transition-all duration-700" style="width:${p}%"></div></div>
-                    </div>`;
-                }).join('');
-            }
-            if(v) {
-                v.innerHTML = Object.keys(documentation).map(k => `
-                    <div class="space-y-6">
-                        <h4 class="text-[9px] md:text-[10px] font-bold tracking-widest text-${documentation[k].c} uppercase border-b border-white/5 pb-4">${documentation[k].t}</h4>
-                        ${documentation[k].list.map(node => `
-                            <div onclick="openStudyModal('${k}', '${node.n}')" class="liquid-glass p-6 md:p-8 rounded-2xl md:rounded-3xl cursor-pointer hover:border-white/20 transition-all">
-                                <h5 class="font-bold text-base md:text-lg">${node.n}</h5>
-                                <p class="text-[8px] md:text-[9px] opacity-40 uppercase tracking-widest mt-2">Study Documentation</p>
-                            </div>
-                        `).join('')}
-                    </div>`).join('');
-            }
-            if(r) {
-                r.innerHTML = Object.keys(studyMaterial).map(k => `
-                    <div class="space-y-6">
-                        <h4 class="text-[9px] md:text-[10px] font-bold tracking-widest text-${studyMaterial[k].c} uppercase border-b border-white/5 pb-4">${studyMaterial[k].t}</h4>
-                        ${studyMaterial[k].list.map(node => `
-                            <a href="${node.url}" target="_blank" class="liquid-glass p-6 md:p-8 rounded-2xl md:rounded-3xl block hover:border-white/20 transition-all">
-                                <h5 class="font-bold text-base md:text-lg">${node.n}</h5>
-                                <p class="text-[8px] md:text-[9px] opacity-40 uppercase tracking-widest mt-2">Resource Node</p>
-                            </a>
-                        `).join('')}
-                    </div>`).join('');
-            }
-            lucide.createIcons();
-        }
-
-        // Modal Handlers (Corrected)
-        function openStudyModal(catKey, nodeName) {
-            const item = documentation[catKey].list.find(n => n.n === nodeName);
-            document.getElementById('popup-content').innerHTML = `
-                <div class="flex justify-between items-start mb-6">
-                    <h2 class="text-2xl md:text-4xl font-black uppercase tracking-tighter">${item.n}</h2>
-                    <button onclick="closeModal()"><i data-lucide="x" class="opacity-30"></i></button>
-                </div>
-                <div class="space-y-4 md:space-y-6 text-sm md:text-lg opacity-80 leading-relaxed">
-                    <p>${item.d}</p>
-                    <div class="p-4 md:p-6 bg-white/5 rounded-2xl border border-white/5">
-                        <p class="text-xs font-bold mb-2">Verified Reference:</p>
-                        <a href="${item.url}" target="_blank" class="text-green-500 break-all font-mono text-xs underline">${item.url}</a>
+        function renderCards() {
+            const container = document.getElementById('card-container');
+            container.innerHTML = Object.keys(topics).map(key => {
+                const topic = topics[key];
+                const completed = (userProgress[key] || []).length;
+                const percentage = Math.round((completed / topic.items.length) * 100);
+                return `
+                <div onclick="openWindow('${key}')" class="liquid-glass p-8 rounded-[2.5rem] border-t-${topic.color} border-t-2 cursor-pointer group hover:bg-white/5 transition-all">
+                    <i data-lucide="${topic.icon}" class="text-${topic.color} mb-6 w-8 h-8"></i>
+                    <h3 class="font-bold text-lg mb-4">${topic.title}</h3>
+                    <div class="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-${topic.color} h-full transition-all duration-700" style="width: ${percentage}%"></div>
                     </div>
-                </div>
-                <div class="mt-8 pt-6 border-t border-white/5">
-                    <a href="${item.url}" target="_blank" class="w-full text-center bg-green-500 text-black font-bold uppercase text-[10px] px-8 py-4 rounded-full inline-block">Access Material</a>
                 </div>`;
-            showModal();
+            }).join('');
+            lucide.createIcons();
         }
 
-        function openProgressModal(catKey, catTitle) {
-            const category = masteryCategories[catKey]; const items = category.list; const done = state[catKey] || {};
-            document.getElementById('popup-content').innerHTML = `
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl md:text-4xl font-black uppercase tracking-tighter">${catTitle} Progress</h2>
-                    <button onclick="closeModal()"><i data-lucide="x" class="opacity-30"></i></button>
+        function openWindow(key) {
+            const topic = topics[key];
+            const completedList = userProgress[key] || [];
+            const container = document.getElementById('window-content');
+            container.innerHTML = `
+                <div class="flex justify-between mb-6">
+                    <h2 class="text-3xl font-bold text-${topic.color}">${topic.title} Modules</h2>
+                    <button onclick="closeWindow()"><i data-lucide="x" class="opacity-50"></i></button>
                 </div>
                 <div class="space-y-2">
-                    ${items.map(i => `
-                        <div onclick="toggleVerify('${catKey}','${i}', '${catTitle}')" class="p-4 md:p-6 rounded-xl md:rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center cursor-pointer transition-all">
-                            <span class="text-sm md:text-base ${done[i] ? 'opacity-20 line-through text-green-500' : ''}">${i}</span>
-                            <div class="w-5 h-5 rounded-full flex items-center justify-center border ${done[i] ? 'bg-green-500 border-none' : 'border-white/20'}">${done[i] ? '<i data-lucide="check" class="w-3 h-3 text-white"></i>' : ''}</div>
-                        </div>`).join('')}
+                    ${topic.items.map(item => {
+                        const isDone = completedList.includes(item);
+                        return `
+                        <div onclick="toggleItem('${key}', '${item}')" class="flex items-center justify-between p-5 rounded-2xl cursor-pointer ${isDone ? 'bg-green-500/10 border border-green-500/20' : 'bg-white/5 border border-white/5'}">
+                            <span class="${isDone ? 'text-green-400' : ''}">${item}</span>
+                            <div class="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center ${isDone ? 'bg-green-500 border-none' : ''}">
+                                ${isDone ? '<i data-lucide="check" class="w-3 h-3 text-white"></i>' : ''}
+                            </div>
+                        </div>`;
+                    }).join('')}
                 </div>`;
-            showModal();
-        }
-
-        function toggleVerify(cat, name, title) {
-            if(!state[cat]) state[cat] = {}; state[cat][name] ? delete state[cat][name] : state[cat][name] = true;
-            localStorage.setItem('cs-construct-master-final', JSON.stringify(state));
-            draw(); openProgressModal(cat, title);
-        }
-
-        function toggleTheme() {
-            const b = document.documentElement; const ide = document.getElementById('sandbox-ide');
-            const isLight = b.getAttribute('data-theme') === 'light'; const newTheme = isLight ? 'dark' : 'light';
-            b.setAttribute('data-theme', newTheme);
-            document.getElementById('theme-icon').setAttribute('data-lucide', isLight ? 'moon' : 'sun');
-            if (ide) ide.src = `https://onecompiler.com/embed/python?theme=${newTheme}`;
+            document.getElementById('floating-window').classList.add('active');
+            document.getElementById('overlay').classList.add('opacity-100', 'pointer-events-auto');
             lucide.createIcons();
         }
 
-        function showModal() { document.getElementById('popup-window').classList.add('active'); document.getElementById('modal-overlay').classList.add('active'); lucide.createIcons(); }
-        function closeModal() { document.getElementById('popup-window').classList.remove('active'); document.getElementById('modal-overlay').classList.remove('active'); }
+        function toggleItem(key, item) {
+            if (!userProgress[key]) userProgress[key] = [];
+            userProgress[key].includes(item) ? userProgress[key] = userProgress[key].filter(i => i !== item) : userProgress[key].push(item);
+            localStorage.setItem('cs-hub-v4', JSON.stringify(userProgress));
+            renderCards(); openWindow(key);
+        }
 
-        document.addEventListener('mousemove', e => {
-            const c = document.getElementById('cursor'), f = document.getElementById('cursor-follower');
-            if(c && f) { c.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`; f.style.transform = `translate(${e.clientX-20}px, ${e.clientY-20}px)`; }
-            document.documentElement.style.setProperty('--m-x', (e.clientX/window.innerWidth)*100+'%');
-            document.documentElement.style.setProperty('--m-y', (e.clientY/window.innerHeight)*100+'%');
-        });
+        function closeWindow() { document.getElementById('floating-window').classList.remove('active'); document.getElementById('overlay').classList.remove('opacity-100', 'pointer-events-auto'); }
 
-        window.addEventListener('scroll', () => {
-            const rail = document.getElementById('progress-rail'); const fill = document.getElementById('progress-fill');
-            const scrollPos = window.scrollY; const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            rail.style.opacity = scrollPos > 20 ? "1" : "0"; if(fill) fill.style.height = (scrollPos / totalHeight * 100) + "%";
-        });
-
-        draw();
-        const obs = new IntersectionObserver(e => e.forEach(x => x.isIntersecting && x.target.classList.add('active')), {threshold: 0.1});
-        document.querySelectorAll('.reveal').forEach(r => obs.observe(r));
+        renderCards();
     </script>
 </body>
 </html>
