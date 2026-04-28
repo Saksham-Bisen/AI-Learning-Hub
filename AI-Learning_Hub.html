@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI CS Learning Hub | Full Resource Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; background: #051610; overflow-x: hidden; scroll-behavior: smooth;}
+        
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px) saturate(160%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .bg-mesh {
+            background: radial-gradient(circle at 10% 20%, rgba(34, 197, 94, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 10%, rgba(249, 115, 22, 0.15) 0%, transparent 40%),
+                        linear-gradient(to bottom, #062b1a, #0a0a0a);
+            background-attachment: fixed;
+        }
+
+        #floating-window {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translate(-50%, -50%) scale(0.9);
+            opacity: 0; pointer-events: none;
+        }
+        #floating-window.active { transform: translate(-50%, -50%) scale(1); opacity: 1; pointer-events: auto; }
+
+        .resource-card:hover { border-color: rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.06); }
+        .pulse-glow { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.3); } 70% { box-shadow: 0 0 0 8px rgba(250, 204, 21, 0); } 100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); } }
+    </style>
+</head>
+<body class="bg-mesh min-h-screen text-white p-6 md:p-10" onclick="initAudio()">
+
+    <nav class="max-w-7xl mx-auto flex items-center justify-between liquid-glass px-8 py-4 rounded-3xl mb-12 relative z-10">
+        <div class="flex items-center gap-3">
+            <div class="bg-green-500/20 p-2 rounded-xl border border-green-500/30"><i data-lucide="brain-circuit" class="text-green-400 w-6 h-6"></i></div>
+            <span class="font-bold text-lg tracking-tight">AI CS Hub</span>
+        </div>
+        <button id="muteBtn" onclick="toggleMute(event)" class="liquid-glass p-2 px-4 rounded-xl flex items-center gap-3 hover:bg-white/10 transition-all border border-white/10 pulse-glow">
+            <span class="text-[9px] font-bold uppercase tracking-widest text-yellow-400" id="audioStatus">Ambient On</span>
+            <div id="audioIconContainer"><i data-lucide="volume-2" class="w-4 h-4 text-yellow-400"></i></div>
+        </button>
+    </nav>
+
+    <header class="text-center mb-16">
+        <h1 class="text-5xl md:text-6xl font-extrabold mb-4">Master <span class="text-orange-400">Computer Science</span></h1>
+        <p class="text-gray-400">Your curated roadmap to engineering excellence.</p>
+    </header>
+
+    <div id="card-container" class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6 mb-24">
+        </div>
+
+    <section class="max-w-7xl mx-auto pb-20">
+        <div class="flex items-center gap-4 mb-10">
+            <h2 class="text-3xl font-bold">Free Study Resources</h2>
+            <div class="h-[1px] flex-grow bg-white/10"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="liquid-glass p-6 rounded-3xl space-y-4">
+                <div class="flex items-center gap-2 text-green-400 mb-2">
+                    <i data-lucide="book-open" class="w-5 h-5"></i>
+                    <span class="text-xs font-bold uppercase tracking-widest">Documentation</span>
+                </div>
+                <div class="space-y-3">
+                    <a href="https://developer.mozilla.org" target="_blank" class="resource-card block p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center group">
+                        <span>MDN Web Docs</span>
+                        <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </a>
+                    <a href="https://en.cppreference.com" target="_blank" class="resource-card block p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center group">
+                        <span>C++ Reference</span>
+                        <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="liquid-glass p-6 rounded-3xl space-y-4">
+                <div class="flex items-center gap-2 text-orange-400 mb-2">
+                    <i data-lucide="play-circle" class="w-5 h-5"></i>
+                    <span class="text-xs font-bold uppercase tracking-widest">Video Learning</span>
+                </div>
+                <div class="space-y-3">
+                    <a href="https://www.freecodecamp.org" target="_blank" class="resource-card block p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center group">
+                        <span>freeCodeCamp</span>
+                        <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@mycodeschool" target="_blank" class="resource-card block p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center group">
+                        <span>MyCodeSchool (DSA)</span>
+                        <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="liquid-glass p-6 rounded-3xl space-y-4">
+                <div class="flex items-center gap-2 text-blue-400 mb-2">
+                    <i data-lucide="terminal" class="w-5 h-5"></i>
+                    <span class="text-xs font-bold uppercase tracking-widest">Interactive</span>
+                </div>
+                <div class="space-y-3">
+                    <a href="https://leetcode.com" target="_blank" class="resource-card block p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center group">
+                        <span>LeetCode</span>
+                        <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </a>
+                    <a href="https://www.codewars.com" target="_blank" class="resource-card block p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center group">
+                        <span>CodeWars</span>
+                        <i data-lucide="external-link" class="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="overlay" onclick="closeWindow()" class="fixed inset-0 bg-black/70 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300 z-40"></div>
+    <div id="floating-window" class="fixed top-1/2 left-1/2 w-[90%] max-w-xl max-h-[75vh] liquid-glass rounded-[2.5rem] z-50 p-8 overflow-y-auto">
+        <div id="window-content"></div>
+    </div>
+
+    <script>
+        const topics = {
+            programming: { title: "Programming", icon: "code-2", color: "green-400", items: ["Variable Scoping", "Pointers in C", "Memory Layout", "File I/O"] },
+            math: { title: "Mathematics", icon: "sigma", color: "green-200", items: ["Graph Theory", "Logic Gates", "Set Operations", "Recurrence Relations"] },
+            dsa: { title: "DSA", icon: "layers", color: "yellow-400", items: ["Array Traversal", "Queue Impl", "Quick Sort", "DFS/BFS"] },
+            webdev: { title: "Web Dev", icon: "globe", color: "orange-400", items: ["Flexbox/Grid", "DOM Events", "Async Fetch", "Auth Flow"] },
+            aiml: { title: "AI / ML", icon: "bot", color: "orange-600", items: ["Data Cleaning", "Loss Functions", "Tensors 101", "Model Training"] }
+        };
+
+        let userProgress = JSON.parse(localStorage.getItem('cs-hub-v4')) || {};
+        const audio = new Audio('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'); 
+        audio.loop = true; audio.volume = 0.15;
+        let isMuted = false; let audioStarted = false;
+
+        function initAudio() { if (!audioStarted) { audio.play(); audioStarted = true; } }
+
+        function toggleMute(e) {
+            e.stopPropagation(); isMuted = !isMuted; audio.muted = isMuted;
+            document.getElementById('audioStatus').innerText = isMuted ? "Ambient Off" : "Ambient On";
+            document.getElementById('audioIconContainer').innerHTML = isMuted ? '<i data-lucide="volume-x" class="w-4 h-4 text-gray-500"></i>' : '<i data-lucide="volume-2" class="w-4 h-4 text-yellow-400"></i>';
+            lucide.createIcons();
+        }
+
+        function renderCards() {
+            const container = document.getElementById('card-container');
+            container.innerHTML = Object.keys(topics).map(key => {
+                const topic = topics[key];
+                const completed = (userProgress[key] || []).length;
+                const percentage = Math.round((completed / topic.items.length) * 100);
+                return `
+                <div onclick="openWindow('${key}')" class="liquid-glass p-8 rounded-[2.5rem] border-t-${topic.color} border-t-2 cursor-pointer group hover:bg-white/5 transition-all">
+                    <i data-lucide="${topic.icon}" class="text-${topic.color} mb-6 w-8 h-8"></i>
+                    <h3 class="font-bold text-lg mb-4">${topic.title}</h3>
+                    <div class="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+                        <div class="bg-${topic.color} h-full transition-all duration-700" style="width: ${percentage}%"></div>
+                    </div>
+                </div>`;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function openWindow(key) {
+            const topic = topics[key];
+            const completedList = userProgress[key] || [];
+            const container = document.getElementById('window-content');
+            container.innerHTML = `
+                <div class="flex justify-between mb-6">
+                    <h2 class="text-3xl font-bold text-${topic.color}">${topic.title} Modules</h2>
+                    <button onclick="closeWindow()"><i data-lucide="x" class="opacity-50"></i></button>
+                </div>
+                <div class="space-y-2">
+                    ${topic.items.map(item => {
+                        const isDone = completedList.includes(item);
+                        return `
+                        <div onclick="toggleItem('${key}', '${item}')" class="flex items-center justify-between p-5 rounded-2xl cursor-pointer ${isDone ? 'bg-green-500/10 border border-green-500/20' : 'bg-white/5 border border-white/5'}">
+                            <span class="${isDone ? 'text-green-400' : ''}">${item}</span>
+                            <div class="w-5 h-5 rounded-full border border-white/20 flex items-center justify-center ${isDone ? 'bg-green-500 border-none' : ''}">
+                                ${isDone ? '<i data-lucide="check" class="w-3 h-3 text-white"></i>' : ''}
+                            </div>
+                        </div>`;
+                    }).join('')}
+                </div>`;
+            document.getElementById('floating-window').classList.add('active');
+            document.getElementById('overlay').classList.add('opacity-100', 'pointer-events-auto');
+            lucide.createIcons();
+        }
+
+        function toggleItem(key, item) {
+            if (!userProgress[key]) userProgress[key] = [];
+            userProgress[key].includes(item) ? userProgress[key] = userProgress[key].filter(i => i !== item) : userProgress[key].push(item);
+            localStorage.setItem('cs-hub-v4', JSON.stringify(userProgress));
+            renderCards(); openWindow(key);
+        }
+
+        function closeWindow() { document.getElementById('floating-window').classList.remove('active'); document.getElementById('overlay').classList.remove('opacity-100', 'pointer-events-auto'); }
+
+        renderCards();
+    </script>
+</body>
+</html>
